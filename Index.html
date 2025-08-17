@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YZ All In One 2DLive</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    background: #000; /* နောက်ခံကို အနက်ရောင် ပြောင်းလဲလိုက်ပါပြီ */
+}
+
+/* === Fixed Header === */
+#header {
+  position:fixed;top:0;left:0;width:100%;height:60px; /* အမြင့်ကို အနည်းငယ် တိုးလိုက်ပါပြီ */
+  background:#333; /* ဒါကတော့ header ရဲ့ နောက်ခံအရောင်ပါ */
+  color:#FFD700; /* ရွှေရောင် အစစ် */
+  line-height:60px; /* အမြင့်နဲ့ ညီအောင်ထားပြီး စာလုံးကို အလယ်မှာ ထားပါ */
+  text-align:center;
+  font-weight:bold;
+  z-index:1002;
+  font-size: 2.5em; /* စာလုံးအရွယ်အစားကို ကြီးအောင်ထားပါ */
+  text-shadow:
+      /* 3D effect အတွက် shadow များ */
+      2px 2px 0 #DAA520,  /* Goldenrod */
+      4px 4px 0 #B8860B,  /* DarkGoldenrod */
+      6px 6px 0 #A0522D,  /* Sienna */
+      8px 8px 0 #8B4513,  /* SaddleBrown */
+      10px 10px 0 #5C320A; /* ပိုနက်တဲ့အညိုရောင် */
+  letter-spacing: 2px; /* စာလုံးကြား ခြားနားမှု အနည်းငယ် ထပ်ထည့်ပါ */
+}
+
+/* === Sidebar Drawer === */
+#menuBtn{
+  position:fixed;top:10px;left:10px;z-index:1003;
+  padding:10px;background:#333;color:#fff;border:none;
+  cursor:pointer;border-radius:5px;
+}
+.sidebar{
+  width:220px;background:#333;color:#fff;height:100vh;
+  padding-top:20px;position:fixed;top:0;left:-220px;
+  transition:0.3s;z-index:1001;
+}
+.sidebar h2{text-align:center;margin-bottom:20px;}
+.sidebar a{
+  display:block;padding:12px;color:#fff;text-decoration:none;
+}
+.sidebar a:hover{background:#444;}
+
+/* === Content === */
+.content{
+  margin-left:0;padding:20px;margin-top:60px; /* Header အမြင့်ပြောင်းတဲ့အတွက် content margin ကိုလည်း ညှိပါ */
+  transition:margin-left 0.3s;
+}
+.section{display:none;}
+.section.active{display:block;}
+h2{text-align:center;margin:20px 0;color:#f4f4f4;} /* Header ရဲ့ အရောင်နဲ့လိုက်ဖက်အောင် ပြောင်းပါ */
+
+/* === Panel style (Global2D) === */
+.panel{
+  margin:20px 0;border-radius:10px;background:#1a1a1a; /* Darker panel background */
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);overflow:hidden;
+}
+.panel iframe{width:100%;height:300px;border:none;}
+.panel .head{
+  display:flex;justify-content:space-between;
+  padding:10px 15px;font-weight:bold;font-size:1.1em;
+  background:#282828; /* Darker head background */
+  color:#f4f4f4; /* Text color for panel head */
+}
+.panel .badge{background:#FFD700;color:#000;padding:4px 8px;border-radius:4px;font-size:0.9em;} /* Gold badge */
+.panel .live-label{color:#28a745;font-weight:bold;}
+.note{margin:10px 15px;font-size:0.85em;color:#bbb;} /* Lighter grey note */
+
+/* === Telegram Box === */
+.telegram-box{
+  margin:20px 0;padding:10px;background:#333; /* Darker telegram box */
+  border-left:5px solid #FFD700; /* Gold border */
+  font-size:0.95em;
+  color:#f4f4f4;
+}
+.telegram-box a{color:#FFD700;text-decoration:none;font-weight:bold;} /* Gold link */
+
+/* === Side Ad Box (အမြဲပေါ်) === */
+.side-ad{
+  position:fixed;right:0px;bottom:0px;width:170px;
+  background:#1a1a1a; /* Darker ad box */
+  border:1px solid #444; /* Darker border */
+  border-radius:5px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);z-index:1001;
+}
+.ad-content{overflow:hidden;}
+.ad-slide{display:none;text-align:center;padding:5px;}
+.ad-slide img{width:150px;height:100px;border-radius:4px;}
+.ad-slide.active{display:block;}
+
+/* Shop Section specific styles for dark background */
+#shop h2 {
+    color: #FFD700; /* Gold for section titles */
+}
+#shop input[type="text"] {
+    background-color: #333;
+    color: #f4f4f4;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+#shop button {
+    background-color: #FFD700; /* Gold buttons */
+    color: #333;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#shop button:hover {
+    background-color: #DAA520; /* Darker gold on hover */
+}
+#shop #numberGrid button {
+    background-color: #333;
+    color: #FFD700;
+    border: 1px solid #555;
+}
+#shop #numberGrid button:hover {
+    background-color: #555;
+}
+#shop #selectedInfo {
+    background:#282828; /* Darker info box */
+    color:#f4f4f4;
+    border: 1px solid #FFD700; /* Gold border */
+}
+
+/* Member and Telegram Section Titles */
+#member h2, #telegram h2 {
+    color: #FFD700; /* Gold for these section titles too */
+}
+#member p, #telegram p {
+    color: #f4f4f4; /* Light text for paragraphs */
+}
+
+</style>
+</head>
+<body>
+
+<!-- Fixed Header -->
+<div id="header">YZ  2DLive</div>
+
+<!-- Sidebar Drawer -->
+<button id="menuBtn">☰ မီနူး</button>
+<div class="sidebar" id="sidebar">
+  <h2>MM Menu</h2>
+  <a href="#" onclick="showPage('home')">🏠 မူလစာမျက်နှာ</a>
+  <a href="#" onclick="showPage('shop')">🛒 လက်ကီးကံစမ်း</a>
+  <a href="#" onclick="showPage('member')">📝 အဖွဲ့ဝင်</a>
+  <a href="#" onclick="showPage('telegram')">📢 Telegram</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+  <!-- Home Section -->
+  <div id="home" class="section active">
+    <!-- H2 tag removed as it was empty and might conflict with new header styling -->
+
+    <section class="panel" id="mm2d">
+      <div class="head"><span class="badge">MM2D</span><span class="live-label">live</span></div>
+      <iframe src=""></iframe>
+    </section>
+
+    <section class="panel" id="dubai2d">
+      <div class="head"><span class="badge">Dubai2D</span><span class="live-label">live</span></div>
+      <iframe src="https://"></iframe>
+    </section>
+
+    <section class="panel" id="laos2d">
+      <div class="head"><span class="badge">Laos2D</span><span class="live-label">live</span></div>
+      <iframe src="https://laos2d.com"></iframe>
+    </section>
+
+    <section class="panel" id="global2d">
+      <div class="head"><span class="badge">Global2D</span><span class="live-label">live</span></div>
+      <iframe src="https://global2d.live"></iframe>
+    </section>
+
+    <section class="panel" id="maxi2d">
+      <div class="head"><span class="badge">MAXI2D</span><span class="live-label">live</span></div>
+      <iframe src="https://maxi2d.com"></iframe><
+      <div class="note">စတင်အသုံးပြုနိုငိပြီ။</d<iv>
+    </section>
+    <!-- Telegram Announcement -->
+    <div class="telegram-box">
+      Telegram Channel: <a href="https://t.me/yz2channel" target="_blank">@Emilyvale</a>
+    </div>
+  </div>
+
+<!-- Shop Section -->
+<div id="shop" class="section">
+  <h2>🛒 လက်ကီးကံစမ်း</h><<2>
+
+  <!-- ဂဏန်းရွေးချယ်ရန် input + amount -->
+  <div style="margin-bottom:15px;">
+    <input type="text" id="productNumber" placeholder="ဂဏန်းရွေးပါ (00 - 99)" style="padding:8px;width:120px;">
+    <button onclick="selectNumber()">ရွေးပါ</button>
+  </div>
+
+  <!-- Amount buttons -->
+  <div style="margin-bottom:15px;">
+    <button onclick="setAmount(100)">100 ကျပ်</button>
+    <button onclick="setAmount(500)">500 ကျပ်</button>
+    <button onclick="setAmount(1000)">1000 ကျပ်</button>
+  </div>
+
+  <!-- Number grid -->
+  <div id="numberGrid" style="display:grid;grid-template-columns:repeat(10,40px);gap:5px;">
+    <!-- 00 → 99 buttons -->
+  </div>
+
+  <div id="selectedInfo" style="margin-top:15px;background:#e0f7fa;padding:10px;border-radius:5px;">
+    ဂဏန်း/အရေအတွက် ရွေးပြီး မရွေးသေးပါ။
+  </div>
+</div>
+
+<script>
+// Number Grid 00 → 99
+const grid = document.getElementById('numberGrid');
+for(let i=0;i<100;i++){
+  let n = i<10?'0'+i:i;
+  const btn = document.createElement('button');
+  btn.textContent = n;
+  btn.style.padding='10px';
+  btn.style.borderRadius='50%';
+  btn.style.border='1px solid #ccc';
+  btn.style.cursor='pointer';
+  btn.onclick = ()=> selectGridNumber(n);
+  grid.appendChild(btn);
+}
+
+let selectedNumber = null;
+let selectedAmount = null;
+
+function selectGridNumber(num){
+  selectedNumber = num;
+  showSelectedInfo();
+}
+
+function setAmount(amt){
+  selectedAmount = amt;
+  showSelectedInfo();
+}
+
+function selectNumber(){
+  const val = document.getElementById('productNumber').value;
+  if(val !== '' && !isNaN(val) && val>=0 && val<=99){
+    selectedNumber = val.length===1?'0'+val:val;
+    showSelectedInfo();
+  }else{
+    alert('00 → 99 အတွင်း ဂဏန်းထည့်ပါ။');
+  }
+}
+
+function showSelectedInfo(){
+  const info = document.getElementById('selectedInfo');
+  if(selectedNumber && selectedAmount){
+    info.textContent = `ရွေးထားသော ဂဏန်း: ${selectedNumber}, ငွေပမာဏ: ${selectedAmount} ကျပ်`;
+  }else if(selectedNumber){
+    info.textContent = `ရွေးထားသော ဂဏန်း: ${selectedNumber}, ငွေပမာဏ မရွေးသေးပါ။`;
+  }else{
+    info.textContent = 'ဂဏန်း/အရေအတွက် ရွေးပြီး မရွေးသေးပါ။';
+  }
+}
+</script>
+
+  <!-- Member Section -->
+  <div id="member" class="section">
+    <h2>📝 အဖွဲ့ဝင်</h2>
+    <p>Member points စစ်နိုင်မည်။</p>
+  </div>
+
+  <!-- Telegram Section -->
+  <div id="telegram" class="section">
+    <h2>📢 Telegram</h2>
+    <p>Telegram latest posts embed ပြထားနိုင်သည်။</p>
+  </div>
+</div>
+
+<!-- Side Ad Box (အမြဲပေါ်နေ) -->
+<div id="sideAd" class="side-ad">
+  <div class="ad-content">
+    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad1" alt="Ad1"></div>
+    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad2" alt="Ad2"></div>
+    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad3" alt="Ad3"></div>
+  </div>
+</div>
+
+<script>
+// Sidebar toggle
+const menuBtn = document.getElementById('menuBtn');
+const sidebar = document.getElementById('sidebar');
+const content = document.querySelector('.content');
+menuBtn.addEventListener('click',()=>{
+  if(sidebar.style.left==="0px"){ sidebar.style.left="-220px"; content.style.marginLeft="0"; }
+  else{ sidebar.style.left="0px"; content.style.marginLeft="220px"; }
+});
+
+// Page toggle
+function showPage(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  sidebar.style.left="-220px"; content.style.marginLeft="0";
+}
+
+// Ad Carousel auto switch
+const slides = document.querySelectorAll('.ad-slide');
+let currentAd=0;
+function showAd(n){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[n].classList.add('active');
+}
+showAd(currentAd);
+setInterval(()=>{
+  currentAd = (currentAd+1)%slides.length;
+  showAd(currentAd);
+},3000);
+</script>
+
+</body>
+</html>
