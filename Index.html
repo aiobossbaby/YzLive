@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YZ All In One 2DLive</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Poppins font ထည့်သွင်းထားသည် */
     overflow-x: hidden;
     background: #000; /* နောက်ခံကို အနက်ရောင် ပြောင်းလဲလိုက်ပါပြီ */
+    color: #ffd700; /* ပုံမှန်စာလုံးအရောင်ကို ရွှေရောင်ပြောင်းထားသည် */
 }
 
 /* === Fixed Header === */
@@ -58,9 +61,55 @@ body {
 .section.active{display:block;}
 h2{text-align:center;margin:20px 0;color:#f4f4f4;} /* Header ရဲ့ အရောင်နဲ့လိုက်ဖက်အောင် ပြောင်းပါ */
 
+/* === Marquee စတိုင် === */
+.marquee-wrapper {
+  width: 100%;
+  background: #111;
+  border-bottom: 2px solid #ffd700;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px #ffd700aa;
+  margin-bottom: 20px;
+  margin-top: 20px; /* Adjust margin to fit below header */
+}
+
+.marquee-text {
+  display: inline-block;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-shadow: 0 0 6px #ffd700, 0 0 18px #ffd700bb;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ကြေညာပုံ container */
+.announcement {
+  max-width: 760px;
+  width: 100%;
+  border: 2px solid #ffd700;
+  border-radius: 14px;
+  box-shadow: 0 0 15px #ffd700aa;
+  margin-bottom: 30px;
+  overflow: hidden;
+  align-self: center; /* Center the announcement */
+}
+
+.announcement img {
+  width: 100%;
+  display: block;
+  object-fit: contain;
+}
+
 /* === Panel style (Global2D) === */
 .panel{
-  margin:20px 0;border-radius:10px;background:#1a1a1a; /* Darker panel background */
+  margin:20px auto; /* Centering panels */
+  max-width: 760px; /* Max width for panels */
+  border-radius:10px;background:#1a1a1a; /* Darker panel background */
   box-shadow:0 4px 12px rgba(0,0,0,0.3);overflow:hidden;
 }
 .panel iframe{width:100%;height:300px;border:none;}
@@ -76,12 +125,34 @@ h2{text-align:center;margin:20px 0;color:#f4f4f4;} /* Header ရဲ့ အရေ
 
 /* === Telegram Box === */
 .telegram-box{
-  margin:20px 0;padding:10px;background:#333; /* Darker telegram box */
+  margin:20px auto; /* Centering telegram box */
+  max-width: 760px; /* Max width for telegram box */
+  padding:10px;background:#333; /* Darker telegram box */
   border-left:5px solid #FFD700; /* Gold border */
   font-size:0.95em;
   color:#f4f4f4;
 }
 .telegram-box a{color:#FFD700;text-decoration:none;font-weight:bold;} /* Gold link */
+
+/* === ဆက်သွယ်ရန် ခလုတ် === */
+.contact-btn {
+  background-color: #ffd700;
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px #ffd700aa;
+  transition: background-color 0.3s ease;
+  margin-top: 30px; /* Add some space above the button */
+  margin-bottom: 20px; /* Add some space below the button */
+}
+
+.contact-btn:hover {
+  background-color: #ffea00;
+}
 
 /* === Side Ad Box (အမြဲပေါ်) === */
 .side-ad{
@@ -152,20 +223,31 @@ h2{text-align:center;margin:20px 0;color:#f4f4f4;} /* Header ရဲ့ အရေ
 <div class="sidebar" id="sidebar">
   <h2>MM Menu</h2>
   <a href="#" onclick="showPage('home')">🏠 မူလစာမျက်နှာ</a>
-  <a href="#" onclick="showPage('shop')">🛒 လက်ကီးကံစမ်း</a>
-  <a href="#" onclick="showPage('member')">📝 အဖွဲ့ဝင်</a>
-  <a href="#" onclick="showPage('telegram')">📢 Telegram</a>
+  <a href="#" onclick="showPage('shop')">🍀လက်ကီးကံစမ်း</a>
+  <a href="#" onclick="showPage('member')">📝 အဖွဲ့ဝင်များသီးသန့်</a>
+  <a href="#" onclick="showPage('telegram')">📢 Telegramဂရုသို့</a>
 </div>
 
 <!-- Main Content -->
 <div class="content">
   <!-- Home Section -->
-  <div id="home" class="section active">
-    <!-- H2 tag removed as it was empty and might conflict with new header styling -->
+  <div id="home" class="section active" style="display:flex; flex-direction:column; align-items:center;">
+    <!-- စာတန်းပြေး -->
+    <div class="marquee-wrapper" aria-label="Welcome message">
+      <div class="marquee-text" role="marquee" aria-live="polite">မင်္ဂလာပါ။ မိတ်ဆွေများ တစ်နေရာထဲမှာ ထွက်ဂဏန်းများကြည့်နိုင်စေရန် ရည်ရွယ်ပြီးလုပ်ပေးထားပါတယ်
+      </div>
+    </div>
+
+    <!-- ကြေညာပုံ -->
+<div class="announcement" aria-label="Announcement image">
+  <img src="https://i.ibb.co/4RkQxkYs/IMG-20250817-121808-777.jpg" alt="ယုံကြည်စိတ်ချစွာလာရောက်အားပေးလို့ရ" />
+</div>
+
+
 
     <section class="panel" id="mm2d">
       <div class="head"><span class="badge">MM2D</span><span class="live-label">live</span></div>
-      <iframe src=""></iframe>
+      <iframe src="https://api.thaistock2d.com/live"></iframe>
     </section>
 
     <section class="panel" id="dubai2d">
@@ -185,18 +267,23 @@ h2{text-align:center;margin:20px 0;color:#f4f4f4;} /* Header ရဲ့ အရေ
 
     <section class="panel" id="maxi2d">
       <div class="head"><span class="badge">MAXI2D</span><span class="live-label">live</span></div>
-      <iframe src="https://maxi2d.com"></iframe><
-      <div class="note">စတင်အသုံးပြုနိုငိပြီ။</d<iv>
+      <iframe src="https://maxi2d.com"></iframe>
+      <div class="note">စတင်တည်ဆောက်ဆဲမို့လိုအပ်ချက်များအတွက်သည်းခံပေးပါ။ကျေးဇူးတင်ပါသည်။</div>
     </section>
     <!-- Telegram Announcement -->
     <div class="telegram-box">
-      Telegram Channel: <a href="https://t.me/yz2channel" target="_blank">@Emilyvale</a>
+      Telegram Channel: <a href="https://t.me/yz2channel" target="_blank">https://t.me/emilyvale</a>
     </div>
+
+    <!-- ဆက်သွယ်ရန် ခလုတ် -->
+    <button class="contact-btn" onclick="window.location.href='https://t.me/aiobossbaby'">
+      စုံစမ်းမေးမြန်းရန်
+    </button>
   </div>
 
 <!-- Shop Section -->
 <div id="shop" class="section">
-  <h2>🛒 လက်ကီးကံစမ်း</h><<2>
+  <h2>🍀လက်ကီးကံစမ်း</h2>
 
   <!-- ဂဏန်းရွေးချယ်ရန် input + amount -->
   <div style="margin-bottom:15px;">
@@ -274,22 +361,23 @@ function showSelectedInfo(){
   <!-- Member Section -->
   <div id="member" class="section">
     <h2>📝 အဖွဲ့ဝင်</h2>
-    <p>Member points စစ်နိုင်မည်။</p>
+    <p>Member points စစ်နိုင်မည်။မကြာမှီလာမည်။</p>
   </div>
 
   <!-- Telegram Section -->
   <div id="telegram" class="section">
-    <h2>📢 Telegram</h2>
-    <p>Telegram latest posts embed ပြထားနိုင်သည်။</p>
+    <h2>📢 Telegramဂရုသို့</h2>
+    <p>h</p>
   </div>
 </div>
 
 <!-- Side Ad Box (အမြဲပေါ်နေ) -->
+<!-- Side Ad Box (အမြဲပေါ်နေ) -->
 <div id="sideAd" class="side-ad">
   <div class="ad-content">
-    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad1" alt="Ad1"></div>
-    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad2" alt="Ad2"></div>
-    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad3" alt="Ad3"></div>
+    <div class="ad-slide"><img src="https://i.ibb.co/v4Sf5WVJ/IMG-20250817-121130-748.jpg" alt="Side Ad 1" /></div>
+    <div class="ad-slide"><img src="https://via.placeholder.com/760x150?text=Announcement+Image" alt="Side Ad 2" /></div>
+    <div class="ad-slide"><img src="https://via.placeholder.com/150x100?text=Ad3" alt="Ad3" /></div>
   </div>
 </div>
 
